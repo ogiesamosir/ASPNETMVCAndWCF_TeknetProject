@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>Welcome user @(User.Identity.IsAuthenticated ? HttpContext.Current.User.Identity.Name :  "Guest")</p>
+    <h3>List Products</h3>
+    using (Html.BeginForm("cari", "product"))
+    {
+        <input type="text" name="keyword" />
+        <input type="submit" value="Search" />
+        <br />
+        <input type="radio" name="condition" value="byID" checked="checked" /><span>By ID</span>
+        <input type="radio" name="condition" value="byDate" /><span>By Date</span>
+    }
+    <table border="1" cellpadding="2" cellspacing="2">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>CreationDate</th>
+        </tr>
+        @foreach (var product in ViewBag.listProducts)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>@product.Quantity</td>
+                <td>@product.CreationDate.ToString("dd/MM/yyyy")</td>
+            </tr>
+        }
+    </table>
+    <br />
+    <br />
+
+    <br/>
+    <a href="@Url.Action("SignOut" , "Product")">Logout</a>
+}
+
